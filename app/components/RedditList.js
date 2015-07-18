@@ -20,6 +20,21 @@ class RedditList extends React.Component {
 
   state = { threads: this.props.initialThreads };
 
+  upvote = index => {
+    let threadToUpvote = this.state.threads[index];
+
+    threadToUpvote.score = threadToUpvote.score + 1;
+
+    this.setState({ threads: [].concat(this.state.threads) });
+  };
+
+  handleUpvoteClick = (thread) => {
+    return (ev) => {
+      ev.preventDefault();
+      this.upvote(this.state.threads.indexOf(thread));
+    }
+  };
+
   sortedThreads = () => {
     // Sort changes the array.
     // We don't want to change state (except by an explicit setState).
@@ -27,9 +42,9 @@ class RedditList extends React.Component {
 
     let {threads} = this.state;
     return [].concat(threads).sort((threadOne, threadTwo) => {
+      if(threadOne.score == threadTwo.score) return 0;
       if(threadOne.score > threadTwo.score) return -1;
       if(threadOne.score < threadTwo.score) return 1;
-      return 0;
     });
   };
 
@@ -38,12 +53,15 @@ class RedditList extends React.Component {
 
     return (
       <ul>
-        {this.sortedThreads().map(thread => 
+        {this.sortedThreads().map((thread) => 
         <li>
-          ({thread.score}){' '}
+          ({thread.score})
+          {' '}
           <a href={thread.url}>
             {thread.title}
           </a>
+          {' '}
+          <a onClick={this.handleUpvoteClick(thread)} href="#">upvote</a>
         </li>)}
       </ul>
     );
