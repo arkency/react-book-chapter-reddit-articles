@@ -25,7 +25,12 @@ class RedditList extends React.Component {
 
     return (
       <ul>
-        {threads.map(thread => <li>{thread.title}</li>)}
+        {threads.map(thread => 
+        <li>
+          <a href={thread.url}>
+            {thread.title}
+          </a>
+        </li>)}
       </ul>
     );
   }
