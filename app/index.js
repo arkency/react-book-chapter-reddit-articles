@@ -3,7 +3,8 @@ import './styles.css'
 
 import debug from 'debug'
 import React from 'react'
-import Hello from './components/Hello'
+
+import RedditList from './components/RedditList';
 
 const log = debug('application:bootstrap')
 
@@ -21,6 +22,6 @@ log('adding application node to body')
 document.body.appendChild(applicationNode)
 
 log('mounting application')
-React.render(<Hello/>, applicationNode, () => {
+React.render(<RedditList />, applicationNode, () => {
   log('finished mounting application')
 })
