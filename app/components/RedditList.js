@@ -20,12 +20,25 @@ class RedditList extends React.Component {
 
   state = { threads: this.props.initialThreads };
 
+  sortedThreads = () => {
+    // Sort changes the array.
+    // We don't want to change state (except by an explicit setState).
+    // [].concat(threads) creates a new list with threads within.
+
+    let {threads} = this.state;
+    return [].concat(threads).sort((threadOne, threadTwo) => {
+      if(threadOne.score > threadTwo.score) return -1;
+      if(threadOne.score < threadTwo.score) return 1;
+      return 0;
+    });
+  };
+
   render() {
     let {threads} = this.state;
 
     return (
       <ul>
-        {threads.map(thread => 
+        {this.sortedThreads().map(thread => 
         <li>
           ({thread.score}){' '}
           <a href={thread.url}>
