@@ -27,6 +27,7 @@ class RedditList extends React.Component {
       <ul>
         {threads.map(thread => 
         <li>
+          ({thread.score}){' '}
           <a href={thread.url}>
             {thread.title}
           </a>
