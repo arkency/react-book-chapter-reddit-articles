@@ -1,9 +1,9 @@
 import React from 'react/addons';
 
-class RedditList extends React.Component {
+class ArticleList extends React.Component {
   static defaultProps = {
-    initialThreads: [
-      { title: "What React component class syntax should I use?", 
+    initialArticles: [
+      { title: "What React component class syntax should I use?",
         url: "http://reactkungfu.com/2015/07/what-react-component-class-syntax-should-i-use/",
         score: 2
       },
@@ -18,54 +18,50 @@ class RedditList extends React.Component {
     ]
   };
 
-  state = { threads: this.props.initialThreads };
+  state = { articles: this.props.initialArticles };
 
-  upvote = index => {
-    let threadToUpvote = this.state.threads[index];
+  sortedArticles = () => {
+    let { articles } = this.state;
 
-    threadToUpvote.score = threadToUpvote.score + 1;
-
-    this.setState({ threads: [].concat(this.state.threads) });
-  };
-
-  handleUpvoteClick = (thread) => {
-    return (ev) => {
-      ev.preventDefault();
-      this.upvote(this.state.threads.indexOf(thread));
-    }
-  };
-
-  sortedThreads = () => {
-    // Sort changes the array.
-    // We don't want to change state (except by an explicit setState).
-    // [].concat(threads) creates a new list with threads within.
-
-    let {threads} = this.state;
-    return [].concat(threads).sort((threadOne, threadTwo) => {
-      if(threadOne.score == threadTwo.score) return 0;
-      if(threadOne.score > threadTwo.score) return -1;
-      if(threadOne.score < threadTwo.score) return 1;
+    return [].concat(articles).sort((articleOne, articleTwo) => {
+      if(articleOne.score == articleTwo.score) return 0;
+      if(articleOne.score > articleTwo.score) return -1;
+      return 1;
     });
   };
 
-  render() {
-    let {threads} = this.state;
+  upvote = (articleIndex) => {
+    let { articles } = this.state,
+        article = articles[articleIndex];
 
+    article.score = article.score + 1;
+    this.setState({ articles });
+  };
+
+  handleUpvoting = (article) => {
+    return (ev) => {
+      ev.preventDefault();
+      this.upvote(this.state.articles.indexOf(article));
+    };
+  };
+
+  render() {
     return (
       <ul>
-        {this.sortedThreads().map((thread) => 
+        {this.sortedArticles().map(article =>
         <li>
-          ({thread.score})
+          ({article.score})
           {' '}
-          <a href={thread.url}>
-            {thread.title}
+          <a href={article.url}>
+            {article.title}
           </a>
           {' '}
-          <a onClick={this.handleUpvoteClick(thread)} href="#">upvote</a>
-        </li>)}
+          <a href="#" onClick={this.handleUpvoting(article)}>upvote</a>
+        </li>
+        )}
       </ul>
     );
   }
 }
 
-export default RedditList;
+export default ArticleList;
