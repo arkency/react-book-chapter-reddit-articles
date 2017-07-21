@@ -4,6 +4,8 @@ import './styles.css'
 import debug from 'debug'
 import React from 'react'
 
+import ReactDOM from 'react-dom';
+
 import RedditList from './components/RedditList';
 
 const log = debug('application:bootstrap')
@@ -22,6 +24,6 @@ log('adding application node to body')
 document.body.appendChild(applicationNode)
 
 log('mounting application')
-React.render(<RedditList />, applicationNode, () => {
+ReactDOM.render(<RedditList />, applicationNode, () => {
   log('finished mounting application')
 })
