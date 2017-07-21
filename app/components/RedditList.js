@@ -49,7 +49,7 @@ class ArticleList extends React.Component {
     return (
       <ul>
         {this.sortedArticles().map(article =>
-        <li>
+        <li key={article.url}>
           ({article.score})
           {' '}
           <a href={article.url}>
